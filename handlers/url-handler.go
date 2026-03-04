@@ -54,10 +54,14 @@ func ShortenURL(c *gin.Context) {
 	)
 
 	if err != nil {
-		log.Printf("SQL EXEC ERROR: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save URL"})
-		return
-	}
+        log.Printf("SQL EXEC ERROR: %v", err)
+        // INI YANG DIUBAH: Tambahkan "debug": err.Error()
+        c.JSON(http.StatusInternalServerError, gin.H{
+            "error": "Failed to save URL",
+            "debug": err.Error(), 
+        })
+        return
+    }
 
 	c.JSON(http.StatusOK, gin.H{
 		"short_url": shortCode,
