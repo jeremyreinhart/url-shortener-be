@@ -109,7 +109,7 @@ func GetStats(c *gin.Context) {
 func GenerateQR(c *gin.Context) {
 	code := c.Param("code")
 
-	fullURL := "http://" + c.Request.Host + "/" + code
+	fullURL := "https://" + c.Request.Host + "/" + code
 
 	png, err := qrcode.Encode(fullURL, qrcode.Medium, 256)
 	if err != nil {
