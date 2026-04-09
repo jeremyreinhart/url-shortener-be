@@ -1,27 +1,21 @@
-package main
+package handler
 
 import (
-	"log"
-	"os"
-
+	"net/http"
 	"url-shortener/config"
 	"url-shortener/handlers"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
-func main() {
+var app *gin.Engine
 
-	_ = godotenv.Load()
+func init() {
+	config.ConnectDatabase()
 
-	if err := config.ConnectDatabase(); err != nil {
-		log.Fatal("Database connection failed")
-	}
-
-	r := gin.Default()
-
+	r := gin.New()
+	r.Use(gin.Recovery())
 	r.Use(cors.Default())
 
 	r.POST("/shorten", handlers.ShortenURL)
@@ -29,10 +23,9 @@ func main() {
 	r.GET("/stats/:code", handlers.GetStats)
 	r.GET("/qr/:code", handlers.GenerateQR)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+	app = r
+}
 
-	r.Run(":" + port)
+func Handler(w http.ResponseWriter, r *http.Request) {
+	app.ServeHTTP(w, r)
 }
