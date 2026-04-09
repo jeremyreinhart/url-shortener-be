@@ -10,6 +10,7 @@ import (
 
 var DB *sql.DB
 
+
 func ConnectDatabase() error {
 	psqlInfo := os.Getenv("DATABASE_URL")
 	if psqlInfo == "" {
