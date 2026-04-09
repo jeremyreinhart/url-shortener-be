@@ -14,7 +14,7 @@ import (
 
 func main() {
 
-	_ = godotenv.Load()
+	godotenv.Load()
 
 	if err := config.ConnectDatabase(); err != nil {
 		log.Fatal("Database connection failed")
